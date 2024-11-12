@@ -19,7 +19,7 @@ The Screenplay Pattern is beautiful in its simplicity. It's made up of five elem
 > The key elements of the pattern are: actors, abilities, tasks, actions and questions.
 
 <p align="center" width="100%">
-    <img width="70%" src="https://github.com/testla-project/testla-screenplay-core-js/blob/HEAD/doc/screenplay.png"> 
+    <img width="70%" src="https://github.com/testla-project/testla-screenplay-core-js/blob/7914742775b25003da0086f3d3d228a77fd98b84/doc/assets/screenplay.png"> 
 </p>
 
 ## How to start using the project
