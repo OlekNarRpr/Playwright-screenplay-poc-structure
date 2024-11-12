@@ -27,7 +27,7 @@ The Screenplay Pattern is beautiful in its simplicity. It's made up of five elem
 - Clone project
 
 ```
-git clone git@github.com:
+git clone git@github.com:OlekNarRpr/Playwright-screenplay-poc-structure.git
 ```
 
 - Open project folder in Visual code
