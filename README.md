@@ -86,6 +86,7 @@ Reports are configured in case of a failure to attach a screenshot of the page w
 ## Whats next
 
 - [ ] Add more tests
+- [ ] Build DB tests
 - [ ] Build API tests
 - [ ] Project evolution
 
