@@ -36,7 +36,7 @@ git clone git@github.com:OlekNarRpr/Playwright-screenplay-poc-structure.git
   - npx playwright install --with-deps
   - npm install --save-dev @testla/screenplay-playwright
 - Check Extension
-    - Playwright Test for VSCode shoudl be installed
+  - Playwright Test for VSCode shoudl be installed
 - Happy testing
 
 ## Setup linting and code styles
@@ -81,7 +81,7 @@ To be able to run tests locally you will have to create a **.env** file in the r
 ## Reports
 
 Right now when runing tests all reports including an html version and a Junit version will be saved in a folder call playwright-report
-Reports are configured in case of a failure to attach a screenshot of the page where the failure happen. 
+Reports are configured in case of a failure to attach a screenshot of the page where the failure happen.
 
 ## Whats next
 
