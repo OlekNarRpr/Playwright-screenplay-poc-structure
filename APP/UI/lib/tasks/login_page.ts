@@ -13,9 +13,7 @@ export class Login extends Task {
 
   public async performAs(actor: IActor): Promise<void> {
     await this.page.goto("");
-    await this.page.locator(login.emailInput).click();
     await this.page.fill(login.emailInput, actor.states("email"));
-    await this.page.locator(login.passwordInput).click();
     await this.page.fill(login.passwordInput, actor.states("password"));
     await this.page.locator(login.signInBtn).click();
   }
@@ -25,7 +23,7 @@ export class Login extends Task {
   }
 }
 
-export class SeeLoginFailed extends Task {
+export class PlaywrightLogin extends Task {
   private page: Page;
 
   constructor(page: Page) {
@@ -33,11 +31,18 @@ export class SeeLoginFailed extends Task {
     this.page = page;
   }
 
-  public async performAs(): Promise<void> {
-    await this.page.waitForSelector(login.errorText);
+  public async performAs(actor: IActor): Promise<void> {
+    await this.page.goto("");
+    await this.page
+      .getByPlaceholder("e.g. user@gmail.com")
+      .fill(actor.states("email"));
+    await this.page
+      .getByPlaceholder("Case Sensitive")
+      .fill(actor.states("password"));
+    await this.page.getByRole("button", { name: "Sign In" }).click();
   }
 
-  public static errorMessage(page: Page): SeeLoginFailed {
-    return new SeeLoginFailed(page);
+  public static toWebsite(page: Page): PlaywrightLogin {
+    return new PlaywrightLogin(page);
   }
 }
