@@ -6,10 +6,16 @@ import { PropertySearch } from "../lib/tasks/property_search";
 import { SelectTab } from "../lib/tasks/property_page";
 import { IsHomePinShowsCorrectProperty } from "../lib/questions/property_map_page";
 
+// //Example of cookie
+// test.beforeAll(async () => {
+//   await page.context().addCookies([
+//     { name: 'session_id', value: 'your_session_id', domain: 'example.com', path: '/' },
+//   ]);
+// });
+
 test.describe("Login: ", () => {
   test("Validate property shonw on map @L1", async ({ page }) => {
     var propertyAddress: string = "13990 Hickory St, Poway, CA 92064";
-
     const agentMember = Actor.named("Invalid member")
       .with("email", process.env.AGENT_USER)
       .with("password", process.env.AGENT_PASSWORD)
