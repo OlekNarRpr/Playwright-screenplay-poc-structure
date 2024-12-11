@@ -6,7 +6,7 @@ import { IsCorrectErrorShown } from "../lib/questions/login_page";
 import { IsCorrecUrlShown } from "../lib/questions/home_page";
 
 test.describe("Login: ", () => {
-  test("Validate error message for invalid user @L1", async ({ page }) => {
+  test("Validate error message for invalid user @Login", async ({ page }) => {
     const invalidMember = Actor.named("Invalid member")
       .with("email", process.env.INVALID_USER)
       .with("password", process.env.INVALID_PASSWORD)
@@ -16,7 +16,7 @@ test.describe("Login: ", () => {
     await invalidMember.asks(IsCorrectErrorShown.atLogin(page));
   });
 
-  test("Validate login successful @L1", async ({ page }) => {
+  test("Validate login successful @Login", async ({ page }) => {
     const agentMember = Actor.named("Agent member")
       .with("email", process.env.AGENT_USER)
       .with("password", process.env.AGENT_PASSWORD)
