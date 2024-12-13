@@ -1,13 +1,13 @@
-import { defineConfig, devices } from "@playwright/test";
+import { defineConfig, devices, PlaywrightTestConfig } from "@playwright/test";
 import * as dotenv from "dotenv";
 dotenv.config();
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig({
+export const baseConfig: PlaywrightTestConfig = {
   /*Set test timeout in the config*/
-  timeout: 120_000,
+  timeout: 60 * 1000,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -67,4 +67,7 @@ export default defineConfig({
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
   ],
+};
+export default defineConfig({
+  ...baseConfig,
 });

@@ -1,7 +1,7 @@
 import { test } from "@playwright/test";
 import { Actor } from "@testla/screenplay-playwright";
 import { BrowseTheWeb } from "@testla/screenplay-playwright/web";
-import { Login, PlaywrightLogin } from "../lib/tasks/login_page";
+import { Login } from "../lib/tasks/login_page";
 import { IsCorrectErrorShown } from "../lib/questions/login_page";
 import { IsCorrecUrlShown } from "../lib/questions/home_page";
 
@@ -22,7 +22,7 @@ test.describe("Login: ", () => {
       .with("password", process.env.AGENT_PASSWORD)
       .can(BrowseTheWeb.using(page));
 
-    await agentMember.attemptsTo(PlaywrightLogin.toWebsite(page));
+    await agentMember.attemptsTo(Login.toWebsite(page));
     await agentMember.asks(IsCorrecUrlShown.atHomePage(page));
   });
 });

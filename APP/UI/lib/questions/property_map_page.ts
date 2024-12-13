@@ -1,6 +1,6 @@
 import { expect, Page } from "@playwright/test";
 import { Question } from "@testla/screenplay-playwright";
-import { details_popup } from "../locators/map_page";
+import { detailsPopup } from "../locators/map_page";
 
 export class IsHomePinShowsCorrectProperty extends Question<boolean> {
   private page: Page;
@@ -15,7 +15,7 @@ export class IsHomePinShowsCorrectProperty extends Question<boolean> {
   public async answeredBy(): Promise<void> {
     await this.page.locator(".is-flex > .icon").first().click();
     var getPropertyAddress: string | null = await this.page
-      .locator(details_popup.address)
+      .locator(detailsPopup.address)
       .textContent();
     var actualPropertyAddress: string = getPropertyAddress
       ? getPropertyAddress.trim()

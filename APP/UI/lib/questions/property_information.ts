@@ -1,5 +1,6 @@
 import { expect, Page } from "@playwright/test";
 import { Question } from "@testla/screenplay-playwright";
+import { propertyHeader } from "../locators/property_page";
 
 export class AreCorrecCardsShown extends Question<boolean> {
   private page: Page;
@@ -9,7 +10,7 @@ export class AreCorrecCardsShown extends Question<boolean> {
     this.page = page;
   }
 
-  public async answeredBy(): Promise<boolean> {
+  public async answeredBy(): Promise<void> {
     //necessary in order to fully load the Property Information page
     await this.page.waitForLoadState("networkidle");
     for (var i = 0; i < 3000; i = i + 100) {
@@ -155,11 +156,70 @@ export class AreCorrecCardsShown extends Question<boolean> {
           .getByRole("paragraph")
       )
       .toBeVisible();
-
-    return Promise.resolve(true);
   }
 
   public static atPropertyInformationPage(page: Page): AreCorrecCardsShown {
     return new AreCorrecCardsShown(page);
   }
 }
+
+export class IsCorrectPropertyShown extends Question<boolean> {
+  private page: Page;
+  private expectedPropertyInformation: string;
+
+  constructor(page: Page, expectedPropertyInformation: string) {
+    super();
+    this.page = page;
+    this.expectedPropertyInformation = expectedPropertyInformation;
+  }
+
+  public async answeredBy(): Promise<void> {
+    await this.page.waitForLoadState("networkidle");
+    let streetAddress = await this.page
+      .locator(propertyHeader.streetAddress)
+      .textContent();
+    let cityStateZip = await this.page
+      .locator(propertyHeader.cityStateZip)
+      .textContent();
+    var actualPropertyAddress = streetAddress.trim().concat(" ", cityStateZip);
+    expect(actualPropertyAddress).toMatch(this.expectedPropertyInformation);
+  }
+
+  public static asAddressSearchResult(
+    page: Page,
+    expectedPropertyInformation: string
+  ): IsCorrectPropertyShown {
+    return new IsCorrectPropertyShown(page, expectedPropertyInformation);
+  }
+}
+
+// export class IsCorrectPropertyShown extends Question<boolean> {
+//   private page: Page;
+//   private expectedPropertyInformation: string;
+
+//   constructor(page: Page, expectedPropertyInformation: string) {
+//     super();
+//     this.page = page;
+//     this.expectedPropertyInformation = expectedPropertyInformation;
+//   }
+
+//   public async answeredBy(): Promise<void> {
+//     await this.page.waitForLoadState("networkidle");
+
+//     let streetAddress = await this.page
+//       .locator(propertyHeader.streetAddress)
+//       .textContent();
+//     let cityStateZip = await this.page
+//       .locator(propertyHeader.cityStateZip)
+//       .textContent();
+//     var actualPropertyAddress = streetAddress.trim().concat(" ", cityStateZip);
+//     expect(actualPropertyAddress).toMatch(this.expectedPropertyInformation);
+//   }
+
+//   public static asAddressSearchResult(
+//     page: Page,
+//     expectedPropertyInformation: string
+//   ): IsCorrectPropertyShown {
+//     return new IsCorrectPropertyShown(page, expectedPropertyInformation);
+//   }
+// }
