@@ -114,7 +114,8 @@ test.describe("Property search: ", () => {
     await agentMember.attemptsTo(
       SearchProperty.fromHomePage(page, propertySearchData.listingId)
     );
-
+    //Listing ID search and validation shoudl be different.
+    //Search by Listing ID > select correct property from list (Locator: check address) > open the property details > validate data
     await agentMember.asks(
       IsCorrectPropertyShown.asAddressSearchResult(
         page,
