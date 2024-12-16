@@ -7,20 +7,6 @@ import { AreCorrecCardsShown } from "../lib/questions/property_information";
 import propertySearchData from "../data/property_search.json";
 
 test.describe("Property Information: ", () => {
-  //TODO:
-  //   test.beforeAll(async () => {
-  //      DB HELPER:
-  //          Connect to DB
-  //          Query DB for Property Info
-  //          Close connection to DB//
-  //      Save Property Info
-  //      Validate over property Info
-  //   });
-
-  //   test.afterAll(async () => {
-  //     Do I need one? Probably no
-  //   });
-
   test("Validate property information @PropertyInformation", async ({
     page,
   }) => {

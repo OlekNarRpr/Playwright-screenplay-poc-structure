@@ -1,6 +1,6 @@
 import { expect, Page } from "@playwright/test";
 import { Question } from "@testla/screenplay-playwright";
-import { propertyHeader } from "../locators/property_page";
+import { propertyHeader, summary } from "../locators/property_page";
 
 export class AreCorrecCardsShown extends Question<boolean> {
   private page: Page;
@@ -193,33 +193,49 @@ export class IsCorrectPropertyShown extends Question<boolean> {
   }
 }
 
-// export class IsCorrectPropertyShown extends Question<boolean> {
-//   private page: Page;
-//   private expectedPropertyInformation: string;
+export class IsCorrectAddressAndListingIdShown extends Question<boolean> {
+  private page: Page;
+  private expectedAddress: string;
+  private expectedListingId: string;
 
-//   constructor(page: Page, expectedPropertyInformation: string) {
-//     super();
-//     this.page = page;
-//     this.expectedPropertyInformation = expectedPropertyInformation;
-//   }
+  constructor(
+    page: Page,
+    expectedPropertyAddress: string,
+    expectedPropertyListingId: string
+  ) {
+    super();
+    this.page = page;
+    this.expectedAddress = expectedPropertyAddress;
+    this.expectedListingId = expectedPropertyListingId;
+  }
 
-//   public async answeredBy(): Promise<void> {
-//     await this.page.waitForLoadState("networkidle");
+  public async answeredBy(): Promise<void> {
+    await this.page.waitForLoadState("networkidle");
 
-//     let streetAddress = await this.page
-//       .locator(propertyHeader.streetAddress)
-//       .textContent();
-//     let cityStateZip = await this.page
-//       .locator(propertyHeader.cityStateZip)
-//       .textContent();
-//     var actualPropertyAddress = streetAddress.trim().concat(" ", cityStateZip);
-//     expect(actualPropertyAddress).toMatch(this.expectedPropertyInformation);
-//   }
+    let streetAddress = await this.page
+      .locator(propertyHeader.streetAddress)
+      .textContent();
+    let cityStateZip = await this.page
+      .locator(propertyHeader.cityStateZip)
+      .textContent();
+    var actualPropertyAddress = streetAddress.trim().concat(" ", cityStateZip);
+    var actualListingId = await this.page
+      .locator(summary.listingId)
+      .textContent();
 
-//   public static asAddressSearchResult(
-//     page: Page,
-//     expectedPropertyInformation: string
-//   ): IsCorrectPropertyShown {
-//     return new IsCorrectPropertyShown(page, expectedPropertyInformation);
-//   }
-// }
+    expect.soft(actualPropertyAddress).toMatch(this.expectedAddress);
+    expect.soft(actualListingId).toMatch(this.expectedListingId);
+  }
+
+  public static atPropertyPage(
+    page: Page,
+    expectedPropertyAddress: string,
+    expectedPropertyListingId: string
+  ): IsCorrectAddressAndListingIdShown {
+    return new IsCorrectAddressAndListingIdShown(
+      page,
+      expectedPropertyAddress,
+      expectedPropertyListingId
+    );
+  }
+}

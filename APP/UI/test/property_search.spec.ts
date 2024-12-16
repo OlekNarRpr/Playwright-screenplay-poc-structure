@@ -5,10 +5,16 @@ import { Login } from "../lib/tasks/login_page";
 import { SearchProperty } from "../lib/tasks/property_search";
 import { SelectTab } from "../lib/tasks/property_page";
 import { IsHomePinShowsCorrectProperty } from "../lib/questions/property_map_page";
-import { SelectSearchResultView } from "../lib/tasks/search_result";
+import {
+  SelectPropertyByAddrees,
+  SelectSearchResultView,
+} from "../lib/tasks/search_result";
 import { IsPropertyAddressLocated } from "../lib/questions/search_result";
 import propertySearchData from "../data/property_search.json";
-import { IsCorrectPropertyShown } from "../lib/questions/property_information";
+import {
+  IsCorrectAddressAndListingIdShown,
+  IsCorrectPropertyShown,
+} from "../lib/questions/property_information";
 
 test.describe("Property search: ", () => {
   test("Validate property shown on map @PropertySearch", async ({ page }) => {
@@ -114,11 +120,16 @@ test.describe("Property search: ", () => {
     await agentMember.attemptsTo(
       SearchProperty.fromHomePage(page, propertySearchData.listingId)
     );
-    //Listing ID search and validation shoudl be different.
-    //Search by Listing ID > select correct property from list (Locator: check address) > open the property details > validate data
-    await agentMember.asks(
-      IsCorrectPropertyShown.asAddressSearchResult(
+    await agentMember.attemptsTo(
+      SelectPropertyByAddrees.fromSearchResults(
         page,
+        propertySearchData.address
+      )
+    );
+    await agentMember.asks(
+      IsCorrectAddressAndListingIdShown.atPropertyPage(
+        page,
+        propertySearchData.address,
         propertySearchData.listingId
       )
     );

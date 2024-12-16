@@ -1,7 +1,7 @@
 import { expect, Page } from "@playwright/test";
 import { Question } from "@testla/screenplay-playwright";
 import { searchResultGrid } from "../locators/search_result";
-import { legalDescription, propertyHeader } from "../locators/property_page";
+import { legalDescription } from "../locators/property_page";
 
 export class IsPropertyAddressLocated extends Question<boolean> {
   private page: Page;
