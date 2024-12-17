@@ -1,8 +1,8 @@
 import { test } from "@playwright/test";
 import { Actor } from "@testla/screenplay-playwright";
 import { BrowseTheWeb } from "@testla/screenplay-playwright/web";
-import { Login } from "../lib/tasks/login_page";
-import { SearchProperty } from "../lib/tasks/property_search";
+import { Login } from "../lib/tasks/loginPage";
+import { SearchProperty } from "../lib/tasks/propertySearch";
 import {
   AreCorrecCardsShown,
   IsCorrectSummaryShown,

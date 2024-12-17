@@ -1,7 +1,7 @@
 import { test } from "@playwright/test";
 import { Actor } from "@testla/screenplay-playwright";
 import { BrowseTheWeb } from "@testla/screenplay-playwright/web";
-import { Login } from "../lib/tasks/login_page";
+import { Login } from "../lib/tasks/loginPage";
 import { IsCorrectErrorShown } from "../lib/questions/loginPage";
 import { IsCorrecUrlShown } from "../lib/questions/homePage";
 

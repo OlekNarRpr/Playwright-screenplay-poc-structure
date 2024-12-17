@@ -1,14 +1,14 @@
 import { test } from "@playwright/test";
 import { Actor } from "@testla/screenplay-playwright";
 import { BrowseTheWeb } from "@testla/screenplay-playwright/web";
-import { Login } from "../lib/tasks/login_page";
-import { SearchProperty } from "../lib/tasks/property_search";
-import { SelectTab } from "../lib/tasks/property_page";
+import { Login } from "../lib/tasks/loginPage";
+import { SearchProperty } from "../lib/tasks/propertySearch";
+import { SelectTab } from "../lib/tasks/propertyPage";
 import { IsHomePinShowsCorrectProperty } from "../lib/questions/propertyMapPage";
 import {
   SelectPropertyByAddrees,
   SelectSearchResultView,
-} from "../lib/tasks/search_result";
+} from "../lib/tasks/searchPesult";
 import { IsPropertyAddressLocated } from "../lib/questions/searchResult";
 import propertySearchData from "../data/propertySearch.json";
 import {
