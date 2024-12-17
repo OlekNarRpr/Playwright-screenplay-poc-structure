@@ -9,7 +9,6 @@ import {
 } from "../lib/questions/propertyInformationPage";
 import propertySearchData from "../data/propertySearch.json";
 import propertySummaryData from "../data/propertySummary.json";
-import testData from "../data/test.json";
 
 test.describe("Property Information: ", () => {
   test("Validate property information @PropertyInformation", async ({
@@ -30,11 +29,11 @@ test.describe("Property Information: ", () => {
   });
 });
 
-for (const propertyType in testData) {
+for (const propertyType in propertySummaryData) {
   test(`Validate property summary for property type: ${propertyType} @PropertyInformation`, async ({
     page,
   }) => {
-    const propertyData = testData[propertyType];
+    const propertyData = propertySummaryData[propertyType];
     const agentMember = Actor.named("Agent")
       .with("email", process.env.AGENT_USER)
       .with("password", process.env.AGENT_PASSWORD)
@@ -50,17 +49,3 @@ for (const propertyType in testData) {
     );
   });
 }
-
-// const agentMember = Actor.named("Agent")
-//   .with("email", process.env.AGENT_USER)
-//   .with("password", process.env.AGENT_PASSWORD)
-//   .can(BrowseTheWeb.using(page));
-
-// await agentMember.attemptsTo(Login.toWebsite(page));
-// await agentMember.attemptsTo(
-//   SearchProperty.fromHomePage(page, propertyData.address)
-// );
-
-// // await agentMember.asks(
-// //   AreCorrecCardsShown.atPropertyInformationPage(page)
-// // );

@@ -13,6 +13,12 @@ export const summary = {
     "//i[@aria-label='Living Area']/../following-sibling::span[@class='value']",
   lotSize:
     "//i[@aria-label='Lot Size']/../following-sibling::span[@class='value']",
+  yearBuilt:
+    "//i[@aria-label='Year Built']/../following-sibling::span[@class='value']",
+  units:
+    "//i[@aria-label='# of Units']/../following-sibling::span[@class='value']",
+  zoning:
+    "//i[@aria-label='Zoning']/../following-sibling::span[@class='value']",
 };
 
 export const legalDescription = {
