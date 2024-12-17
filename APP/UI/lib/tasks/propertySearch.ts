@@ -31,3 +31,34 @@ export class SearchProperty extends Task {
     return new SearchProperty(page, propertyAddress);
   }
 }
+
+export class SearchPropertyUsingFilter extends Task {
+  private page: Page;
+  private searchCriteria: string;
+
+  constructor(page: Page, searchCriteria: string) {
+    super();
+    this.page = page;
+    this.searchCriteria = searchCriteria;
+  }
+
+  public async performAs(): Promise<void> {
+    await this.page
+      .getByPlaceholder("Enter Address, Place, APN/Tax")
+      .fill(this.searchCriteria);
+    if (this.searchCriteria.trim().split(/\s+/).length == 1) {
+      await this.page.getByText("Find all listings matching").click();
+    } else {
+      await this.page
+        .getByRole("button", { name: "Search", exact: true })
+        .click();
+    }
+  }
+
+  public static fromHomePage(
+    page: Page,
+    searchCriteria: string
+  ): SearchProperty {
+    return new SearchProperty(page, searchCriteria);
+  }
+}
