@@ -2,8 +2,8 @@ import { test } from "@playwright/test";
 import { Actor } from "@testla/screenplay-playwright";
 import { BrowseTheWeb } from "@testla/screenplay-playwright/web";
 import { Login } from "../lib/tasks/login_page";
-import { IsCorrectErrorShown } from "../lib/questions/login_page";
-import { IsCorrecUrlShown } from "../lib/questions/home_page";
+import { IsCorrectErrorShown } from "../lib/questions/loginPage";
+import { IsCorrecUrlShown } from "../lib/questions/homePage";
 
 test.describe("Login: ", () => {
   test("Validate error message for invalid user @Login", async ({ page }) => {

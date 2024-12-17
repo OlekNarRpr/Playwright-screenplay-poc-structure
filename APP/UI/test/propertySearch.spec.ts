@@ -4,21 +4,21 @@ import { BrowseTheWeb } from "@testla/screenplay-playwright/web";
 import { Login } from "../lib/tasks/login_page";
 import { SearchProperty } from "../lib/tasks/property_search";
 import { SelectTab } from "../lib/tasks/property_page";
-import { IsHomePinShowsCorrectProperty } from "../lib/questions/property_map_page";
+import { IsHomePinShowsCorrectProperty } from "../lib/questions/propertyMapPage";
 import {
   SelectPropertyByAddrees,
   SelectSearchResultView,
 } from "../lib/tasks/search_result";
-import { IsPropertyAddressLocated } from "../lib/questions/search_result";
-import propertySearchData from "../data/property_search.json";
+import { IsPropertyAddressLocated } from "../lib/questions/searchResult";
+import propertySearchData from "../data/propertySearch.json";
 import {
   IsCorrectAddressAndListingIdShown,
   IsCorrectPropertyShown,
-} from "../lib/questions/property_information";
+} from "../lib/questions/propertyInformationPage";
 
 test.describe("Property search: ", () => {
   test("Validate property shown on map @PropertySearch", async ({ page }) => {
-    var searchCriteriaAddress: string = propertySearchData.address;
+    const searchCriteriaAddress: string = propertySearchData.address;
     const agentMember = Actor.named("Agent")
       .with("email", process.env.AGENT_USER)
       .with("password", process.env.AGENT_PASSWORD)

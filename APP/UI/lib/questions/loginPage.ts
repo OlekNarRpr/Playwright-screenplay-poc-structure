@@ -1,6 +1,6 @@
 import { expect, Page } from "@playwright/test";
 import { Question } from "@testla/screenplay-playwright";
-import { login } from "../locators/login_page";
+import { login } from "../locators/loginPage";
 
 export class IsCorrectErrorShown extends Question<boolean> {
   private page: Page;

@@ -1,6 +1,6 @@
 import { expect, Page } from "@playwright/test";
 import { Question } from "@testla/screenplay-playwright";
-import { detailsPopup } from "../locators/map_page";
+import { detailsPopup } from "../locators/mapPage";
 
 export class IsHomePinShowsCorrectProperty extends Question<boolean> {
   private page: Page;
