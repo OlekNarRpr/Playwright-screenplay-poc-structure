@@ -1,0 +1,55 @@
+{
+  "sfr": {
+    "address": "4268 Sturtevant St, Detroit, MI 48204",
+    "beds": 4,
+    "baths": 3,
+    "livingArea": 2102,
+    "lotSize": 4791
+  },
+  "condoTh": {
+    "address": "3515 Ewald Cir, #3, Detroit, MI 48204",
+    "beds": 2,
+    "baths": 1,
+    "livingArea": 1188,
+    "yearBuilt": 1948
+  },
+  "coop": {
+    "address": "1952 Thornhill Pl, Detroit, MI 48207",
+    "beds": 3,
+    "baths": 2,
+    "livingArea": 1381,
+    "yearBuilt": 1970
+  },
+  "mobi": {
+    "address": "50494 Van Buren Dr, Plymouth, MI 48170",
+    "beds": 3,
+    "baths": 2,
+    "livingArea": 1562,
+    "yearBuilt": 1992
+  },
+  "other": {
+    "address": "1528 Olivewood Ln, #44, Alpine, CA 91901",
+    "beds": 4,
+    "baths": 2,
+    "livingArea": 1560,
+    "lotSize": 1.62
+  },
+  "mult": {
+    "address": "8665 Quincy St, Detroit, MI 48204",
+    "baths": 2,
+    "livingArea": 2526,
+    "units": 2
+  },
+  "land": {
+    "address": "10372 W Chicago, Detroit, MI 48204",
+    "lotSize": 0.93,
+    "zoning": "R2"
+  },
+  "farm": {
+    "address": "8615 Dexter Chelsea Rd, Dexter, MI 48130",
+    "beds": 3,
+    "baths": 2,
+    "livingArea": 2400,
+    "lotSize": 9
+  }
+}

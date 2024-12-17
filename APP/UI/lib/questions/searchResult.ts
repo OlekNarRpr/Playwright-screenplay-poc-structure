@@ -1,7 +1,7 @@
 import { expect, Page } from "@playwright/test";
 import { Question } from "@testla/screenplay-playwright";
-import { searchResultGrid } from "../locators/search_result";
-import { legalDescription } from "../locators/property_page";
+import { searchResultGrid } from "../locators/searchResult";
+import { legalDescription } from "../locators/propertyInformationPage";
 
 export class IsPropertyAddressLocated extends Question<boolean> {
   private page: Page;
@@ -40,10 +40,9 @@ export class IsPropertyAddressLocated extends Question<boolean> {
         break;
 
       default:
-        console.log(
+        throw new Error(
           `Option ${this.key} is not avaliable. Check spelling or add case: ${this.key} to switch statement`
         );
-        break;
     }
   }
 

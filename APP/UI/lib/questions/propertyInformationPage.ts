@@ -1,6 +1,6 @@
 import { expect, Page } from "@playwright/test";
 import { Question } from "@testla/screenplay-playwright";
-import { propertyHeader, summary } from "../locators/property_page";
+import { propertyHeader, summary } from "../locators/propertyInformationPage";
 
 export class AreCorrecCardsShown extends Question<boolean> {
   private page: Page;
@@ -193,7 +193,7 @@ export class IsCorrectPropertyShown extends Question<boolean> {
   }
 }
 
-export class IsCorrectAddressAndListingIdShown extends Question<boolean> {
+export class IsCorrectAddressAndListingIdShown extends Question<void> {
   private page: Page;
   private expectedAddress: string;
   private expectedListingId: string;
@@ -238,4 +238,85 @@ export class IsCorrectAddressAndListingIdShown extends Question<boolean> {
       expectedPropertyListingId
     );
   }
+}
+
+interface PropertyData {
+  address: string;
+  beds?: number;
+  baths?: number;
+  livingArea?: number;
+  lotSize?: number;
+  yearBuilt?: number;
+  units?: number;
+  zoning?: string;
+}
+
+export class IsCorrectSummaryShown extends Question<void> {
+  private page: Page;
+  private propertyType: string;
+  private propertyData: PropertyData;
+
+  constructor(page: Page, propertyType: string, propertyData: PropertyData) {
+    super();
+    this.page = page;
+    this.propertyType = propertyType;
+    this.propertyData = propertyData;
+  }
+
+  public async answeredBy(): Promise<void> {
+    await this.page.waitForLoadState("networkidle");
+    var actualSummaryData = await collectSummaryData(this.page);
+
+    for (const key in this.propertyData) {
+      if (key != "address") {
+        expect.soft(actualSummaryData[key]).toEqual(this.propertyData[key]);
+      }
+    }
+  }
+
+  public static forPropertyType(
+    page: Page,
+    propertyType: string,
+    propertyData: PropertyData
+  ): IsCorrectSummaryShown {
+    return new IsCorrectSummaryShown(page, propertyType, propertyData);
+  }
+}
+
+async function collectSummaryData(page: Page) {
+  var summaryInformation = {
+    beds: undefined,
+    baths: undefined,
+    livingArea: undefined,
+    lotSize: undefined,
+    yearBuilt: undefined,
+    units: undefined,
+    zoning: undefined,
+  };
+
+  const locators = {
+    beds: summary.beds,
+    baths: summary.baths,
+    livingArea: summary.livingArea,
+    lotSize: summary.lotSize,
+    yearBuilt: summary.yearBuilt,
+    units: summary.units,
+    zoning: summary.zoning,
+  };
+
+  for (const locator in locators) {
+    if (await page.locator(locators[locator]).isVisible()) {
+      const value = await page.locator(locators[locator]).textContent();
+      if (locator == "zoning") summaryInformation[locator] = value;
+      else {
+        const convertedValue = convertStringToNumberForPropertySummary(value);
+        summaryInformation[locator] = convertedValue;
+      }
+    }
+  }
+  return summaryInformation;
+}
+
+function convertStringToNumberForPropertySummary(stringNumber: string): number {
+  return Number(stringNumber.replace(",", ""));
 }

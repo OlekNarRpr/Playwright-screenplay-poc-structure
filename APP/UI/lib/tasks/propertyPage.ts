@@ -15,8 +15,8 @@ export class SelectTab extends Task {
     try {
       await this.page.getByRole("link", { name: this.tabName }).click();
     } catch (error) {
-      console.log(
-        this.tabName + " is invalid option. Check spesling and tab name"
+      throw new Error(
+        `Option ${this.tabName} is invalid option. Check speling and tab name`
       );
     }
   }

@@ -1,9 +1,6 @@
 import { Task } from "@testla/screenplay-playwright";
 import { Page } from "@playwright/test";
-import {
-  searchResultGrid,
-  searchResultHeader,
-} from "../locators/search_result";
+import { searchResultGrid, searchResultHeader } from "../locators/searchResult";
 
 export class SelectSearchResultView extends Task {
   private page: Page;
