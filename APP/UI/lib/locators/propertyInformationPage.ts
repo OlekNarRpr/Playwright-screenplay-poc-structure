@@ -18,7 +18,7 @@ export const summary = {
   units:
     "//i[@aria-label='# of Units']/../following-sibling::span[@class='value']",
   zoning:
-    "//i[@aria-label='Zoning']/../following-sibling::span[@class='value']",
+    "//i[@aria-label='Zoning']/../following-sibling::div[@class='value break-word']",
 };
 
 export const legalDescription = {

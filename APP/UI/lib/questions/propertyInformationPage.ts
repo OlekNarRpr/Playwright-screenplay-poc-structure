@@ -266,28 +266,11 @@ export class IsCorrectSummaryShown extends Question<void> {
   public async answeredBy(): Promise<void> {
     await this.page.waitForLoadState("networkidle");
     var actualSummaryData = await collectSummaryData(this.page);
-    if (
-      this.propertyType == "sfr" ||
-      this.propertyType == "other" ||
-      this.propertyType == "farm"
-    ) {
-      expect.soft(actualSummaryData.beds).toEqual(this.propertyData.beds);
-      expect.soft(actualSummaryData.baths).toEqual(this.propertyData.baths);
-      expect
-        .soft(actualSummaryData.livingArea)
-        .toEqual(this.propertyData.livingArea);
-      expect.soft(actualSummaryData.lotSize).toEqual(this.propertyData.lotSize);
-    } else if (
-      this.propertyType == "condoTh" ||
-      this.propertyType == "coop" ||
-      this.propertyType == "mobi"
-    ) {
-    } else if (this.propertyType == "mult") {
-    } else if (this.propertyType == "land") {
-    } else {
-      throw new Error(
-        `${this.propertyType} is not valuable option. Check speling or update the if statement for IsCorrectSummaryShown.forPropertyType`
-      );
+
+    for (const key in this.propertyData) {
+      if (key != "address") {
+        expect.soft(actualSummaryData[key]).toEqual(this.propertyData[key]);
+      }
     }
   }
 
@@ -302,13 +285,13 @@ export class IsCorrectSummaryShown extends Question<void> {
 
 async function collectSummaryData(page: Page) {
   var summaryInformation = {
-    beds: null,
-    baths: null,
-    livingArea: null,
-    lotSize: null,
-    yearBuilt: null,
-    units: null,
-    zoning: null,
+    beds: undefined,
+    baths: undefined,
+    livingArea: undefined,
+    lotSize: undefined,
+    yearBuilt: undefined,
+    units: undefined,
+    zoning: undefined,
   };
 
   const locators = {
