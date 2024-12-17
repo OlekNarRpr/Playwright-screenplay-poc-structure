@@ -45,7 +45,7 @@ for (const propertyType in propertySummaryData) {
     );
 
     await agentMember.asks(
-      IsCorrectSummaryShown.forPropertyType(page, propertyType, propertyData)
+      IsCorrectSummaryShown.forPropertyType(page, propertyData)
     );
   });
 }

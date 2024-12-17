@@ -253,13 +253,11 @@ interface PropertyData {
 
 export class IsCorrectSummaryShown extends Question<void> {
   private page: Page;
-  private propertyType: string;
   private propertyData: PropertyData;
 
-  constructor(page: Page, propertyType: string, propertyData: PropertyData) {
+  constructor(page: Page, propertyData: PropertyData) {
     super();
     this.page = page;
-    this.propertyType = propertyType;
     this.propertyData = propertyData;
   }
 
@@ -276,10 +274,9 @@ export class IsCorrectSummaryShown extends Question<void> {
 
   public static forPropertyType(
     page: Page,
-    propertyType: string,
     propertyData: PropertyData
   ): IsCorrectSummaryShown {
-    return new IsCorrectSummaryShown(page, propertyType, propertyData);
+    return new IsCorrectSummaryShown(page, propertyData);
   }
 }
 

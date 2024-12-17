@@ -2,7 +2,10 @@ import { test } from "@playwright/test";
 import { Actor } from "@testla/screenplay-playwright";
 import { BrowseTheWeb } from "@testla/screenplay-playwright/web";
 import { Login } from "../lib/tasks/loginPage";
-import { SearchProperty } from "../lib/tasks/propertySearch";
+import {
+  SearchProperty,
+  SearchPropertyUsingTypeStatusFilter,
+} from "../lib/tasks/propertySearch";
 import { SelectTab } from "../lib/tasks/propertyPage";
 import { IsHomePinShowsCorrectProperty } from "../lib/questions/propertyMapPage";
 import {
@@ -139,68 +142,50 @@ test.describe("Property search: ", () => {
     page,
   }) => {
     const searchCriteria = "San Diego, California";
-    const include = ["For Sale", "For Lease"];
-    const colums = [
-      "Active",
-      "Active Under Contract",
-      "Pending",
-      "Hold",
-      "Closed",
-      "Withdrawn",
-      "Canceled",
-      "Expired",
-    ];
+    // const combinedData = {
+    //   type: ["For Sale", "For Lease"],
+    //   status: [
+    //     "Active",
+    //     "Active Under Contract",
+    //     "Pending",
+    //     "Hold",
+    //     "Closed",
+    //     "Withdrawn",
+    //     "Canceled",
+    //     "Expired",
+    //   ],
+    // };
+    const combinedData = {
+      type: ["For Sale"],
+      status: ["Hold", "Canceled", "Expired"],
+    };
+
     const agentMember = Actor.named("Agent")
       .with("email", process.env.AGENT_USER)
       .with("password", process.env.AGENT_PASSWORD)
       .can(BrowseTheWeb.using(page));
 
     await agentMember.attemptsTo(Login.toWebsite(page));
-    await agentMember.attemptsTo(
-      SearchProperty.fromHomePage(page, searchCriteria)
-    );
-    await agentMember.attemptsTo(
-      SelectSearchResultView.typeAs(page, "List View")
-    );
 
-    var test = {
-      orgId: "vanrv-a",
-      orgName: "New River Valley Association of REALTORS® MLS",
-      data: [
-        {
-          searchType: "address",
-          address: "974 Round Meadow Dr,Christiansburg, VA 24073",
-          listingId: "420515",
-          summaryInformation:
-            "status, beds, bath, listingId, livingArea, ownerName, listPrice, lotSize, type",
-        },
-        {
-          searchType: "listingId",
-          address: "2130 Lubna Dr,Christiansburg, VA 24073",
-          listingId: "422298",
-          summaryInformation:
-            "status, beds, bath, listingId, livingArea, listPrice, lotSize, type",
-        },
-        {
-          searchType: "address",
-          address: "529 Free St,Dublin, VA 24084",
-          listingId: "422674",
-          summaryInformation:
-            "status, beds, bath, daysOnRpr, livingArea, zoning, listingId, listPrice, type",
-        },
-        {
-          searchType: "listingId",
-          address: "6544 Owens Rd,Radford, VA 24141",
-          listingId: "422503",
-          summaryInformation:
-            "status, beds, bath,livingArea, type, ownerName, listingId, listPrice, type",
-        },
-      ],
-    };
-
-    // await agentMember.asks();
+    await agentMember.attemptsTo(
+      SearchPropertyUsingTypeStatusFilter.fromHomePage(
+        page,
+        searchCriteria,
+        combinedData
+      )
+    );
+    // await agentMember.attemptsTo(
+    //   SelectSearchResultView.typeAs(page, "List View")
+    // );
   });
 });
+
+// combinedData.include.forEach(status => {
+//   console.log(`\n${status}:`);
+//   combinedData.columns.forEach(column => {
+//     console.log(`${column}`);
+//   });
+// });
 // getByLabel('type/status') - dropdown
 
 //getByLabel('For Sale')
