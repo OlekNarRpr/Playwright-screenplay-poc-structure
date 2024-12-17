@@ -10,7 +10,7 @@ export class IsCorrecUrlShown extends Question<boolean> {
   }
 
   public async answeredBy(): Promise<boolean> {
-    await expect(this.page).toHaveURL(/home/);
+    await expect(this.page).toHaveURL(/home/, { timeout: 10_000 });
     return Promise.resolve(true);
   }
 

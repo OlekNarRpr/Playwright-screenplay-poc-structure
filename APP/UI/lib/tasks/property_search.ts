@@ -1,8 +1,7 @@
 import { Task } from "@testla/screenplay-playwright";
 import { Page } from "@playwright/test";
-import { location_dropdown_panel } from "../locators/home_page";
 
-export class PropertySearch extends Task {
+export class SearchProperty extends Task {
   private page: Page;
   private propertyAddress: string;
 
@@ -16,13 +15,19 @@ export class PropertySearch extends Task {
     await this.page
       .getByPlaceholder("Enter Address, Place, APN/Tax")
       .fill(this.propertyAddress);
-    await this.page.locator(location_dropdown_panel.suggestion_address).click();
+    if (this.propertyAddress.trim().split(/\s+/).length == 1) {
+      await this.page.getByText("Find all listings matching").click();
+    } else {
+      await this.page
+        .getByRole("button", { name: "Search", exact: true })
+        .click();
+    }
   }
 
   public static fromHomePage(
     page: Page,
     propertyAddress: string
-  ): PropertySearch {
-    return new PropertySearch(page, propertyAddress);
+  ): SearchProperty {
+    return new SearchProperty(page, propertyAddress);
   }
 }

@@ -1,0 +1,12 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    // ... other compiler options
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strictNullChecks": false
+  },
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
+}
