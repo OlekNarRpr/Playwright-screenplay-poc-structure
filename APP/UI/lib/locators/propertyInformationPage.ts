@@ -4,6 +4,8 @@ export const propertyHeader = {
 };
 
 export const summary = {
+  statusType:
+    "//div[@class='summary']/rpr-property-details-summary-panel/div/div/div/div/div[contains(@class, 'status')]",
   listingId:
     "//div[@class='label'][contains(text(),'Listing ID')]/following-sibling::div[@class='value']",
   beds: "//i[@aria-label='Bedrooms']/../following-sibling::span[@class='value']",

@@ -1,7 +1,7 @@
 import { expect, Page } from "@playwright/test";
 import { Question } from "@testla/screenplay-playwright";
 import { searchResultGrid } from "../locators/searchResult";
-import { legalDescription } from "../locators/propertyInformationPage";
+import { legalDescription, summary } from "../locators/propertyInformationPage";
 
 export class IsPropertyAddressLocated extends Question<boolean> {
   private page: Page;
@@ -52,5 +52,41 @@ export class IsPropertyAddressLocated extends Question<boolean> {
     key: string
   ): IsPropertyAddressLocated {
     return new IsPropertyAddressLocated(page, expectedPropertyAddress, key);
+  }
+}
+
+export class IsCorrectTypeAndStatus extends Question<boolean> {
+  private page: Page;
+  private type: string;
+  private status: string;
+
+  constructor(page: Page, type: string, status: string) {
+    super();
+    this.page = page;
+    this.type = type;
+    this.status = status;
+  }
+
+  public async answeredBy(): Promise<void> {
+    await this.page.locator(searchResultGrid.firtResultAdress).click();
+    await this.page.waitForLoadState("networkidle");
+    let getStatusType = await this.page
+      .locator(summary.statusType)
+      .allTextContents();
+    const [status, type] = getStatusType.map((item) => {
+      const parts = item.trim().split("/");
+      return parts.slice(0, 2).map((s) => s.trim());
+    })[0];
+
+    expect.soft(type).toMatch(this.type);
+    expect.soft(status).toMatch(this.status);
+  }
+
+  public static shownInSearchResult(
+    page: Page,
+    type: string,
+    status: string
+  ): IsCorrectTypeAndStatus {
+    return new IsCorrectTypeAndStatus(page, type, status);
   }
 }
