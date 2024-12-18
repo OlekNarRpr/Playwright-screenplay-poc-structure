@@ -31,3 +31,52 @@ export class SearchProperty extends Task {
     return new SearchProperty(page, propertyAddress);
   }
 }
+
+export class ApplyTypeStatusFilter extends Task {
+  private page: Page;
+  private type: string;
+  private status: string;
+
+  constructor(page: Page, type: string, status: string) {
+    super();
+    this.page = page;
+    this.type = type;
+    this.status = status;
+  }
+
+  public async performAs(): Promise<void> {
+    await uncheckTypeStatusFilterCheckboxesCheckPublickRecords(this.page);
+    await this.page.getByLabel(this.type, { exact: true }).check();
+    await this.page.getByLabel(this.status, { exact: true }).check();
+  }
+
+  public static fromHomePage(
+    page: Page,
+    type: string,
+    status: string
+  ): ApplyTypeStatusFilter {
+    return new ApplyTypeStatusFilter(page, type, status);
+  }
+}
+
+async function uncheckTypeStatusFilterCheckboxesCheckPublickRecords(
+  page: Page
+) {
+  const checkboxes = [
+    "Active",
+    "Active Under Contract",
+    "Pending",
+    "Hold",
+    "Closed",
+    "Withdrawn",
+    "Canceled",
+    "Expired",
+    "For Lease",
+    "For Sale",
+  ];
+  await page.getByLabel("type/status").click();
+  for (const checkbox of checkboxes) {
+    await page.getByLabel(checkbox, { exact: true }).uncheck();
+  }
+  await page.getByLabel("Public Records").check();
+}
