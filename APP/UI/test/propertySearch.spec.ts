@@ -5,8 +5,12 @@ import { Login } from "../lib/tasks/loginPage";
 import {
   ApplyTypeStatusFilter,
   SearchProperty,
+  SearchPropertyByData,
 } from "../lib/tasks/propertySearch";
-import { SelectTab } from "../lib/tasks/propertyPage";
+import {
+  CollectSummaryAndBasicFactsData,
+  SelectTab,
+} from "../lib/tasks/propertyPage";
 import { IsHomePinShowsCorrectProperty } from "../lib/questions/propertyMapPage";
 import {
   SelectPropertyByAddrees,
@@ -20,7 +24,11 @@ import propertySearchData from "../data/propertySearch.json";
 import {
   IsCorrectAddressAndListingIdShown,
   IsCorrectPropertyShown,
+  IsCorrectSummaryAndBasicFactsShown,
 } from "../lib/questions/propertyInformationPage";
+
+import propertiesData from "../data/propertiesData.json";
+import { PropertySummaryAndBasicFacts } from "../interface/proppertySummaryAndBasicFacts";
 
 test.describe("Property search: ", () => {
   test("Validate property shown on map @PropertySearch", async ({ page }) => {
@@ -183,6 +191,37 @@ test.describe("Property search: ", () => {
 
       await agentMember.asks(
         IsCorrectTypeAndStatus.shownInSearchResult(page, type, status)
+      );
+    });
+  }
+
+  for (const data of propertiesData.data) {
+    test(`Validate property Summary and Basic Facts for property with Listing ID: ${data.listingId} @PropertySearch`, async ({
+      page,
+    }) => {
+      const agentMember = Actor.named("Agent")
+        .with("email", process.env.AGENT_USER)
+        .with("password", process.env.AGENT_PASSWORD)
+        .can(BrowseTheWeb.using(page));
+
+      await agentMember.attemptsTo(Login.toWebsite(page));
+      await agentMember.attemptsTo(
+        ApplyTypeStatusFilter.fromHomePage(page, "For Sale", "Active")
+      );
+      await agentMember.attemptsTo(
+        SearchPropertyByData.fromHomePage(page, data)
+      );
+      //await page.waitForTimeout(10000);
+      const actualPropertySummaryAndBasicFactsData: PropertySummaryAndBasicFacts =
+        await agentMember.attemptsTo(
+          CollectSummaryAndBasicFactsData.fromPropertyPage(page)
+        );
+      await agentMember.asks(
+        IsCorrectSummaryAndBasicFactsShown.forProperty(
+          page,
+          actualPropertySummaryAndBasicFactsData,
+          data.summaryInformation
+        )
       );
     });
   }

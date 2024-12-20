@@ -1,6 +1,8 @@
 import { expect, Page } from "@playwright/test";
 import { Question } from "@testla/screenplay-playwright";
 import { propertyHeader, summary } from "../locators/propertyInformationPage";
+import { SummaryAndBasicFacts } from "../../interface/propertyData";
+import { PropertySummaryAndBasicFacts } from "../../interface/proppertySummaryAndBasicFacts";
 
 export class AreCorrecCardsShown extends Question<boolean> {
   private page: Page;
@@ -240,80 +242,74 @@ export class IsCorrectAddressAndListingIdShown extends Question<void> {
   }
 }
 
-interface PropertyData {
-  address: string;
-  beds?: number;
-  baths?: number;
-  livingArea?: number;
-  lotSize?: number;
-  yearBuilt?: number;
-  units?: number;
-  zoning?: string;
-}
-
-export class IsCorrectSummaryShown extends Question<void> {
+export class IsCorrectSummaryAndBasicFactsShown extends Question<void> {
   private page: Page;
-  private propertyData: PropertyData;
+  private actualPropertyData: PropertySummaryAndBasicFacts;
+  private expectedPropertyData: SummaryAndBasicFacts;
 
-  constructor(page: Page, propertyData: PropertyData) {
+  constructor(
+    page: Page,
+    actualPropertyData: PropertySummaryAndBasicFacts,
+    expectedPropertyData: SummaryAndBasicFacts
+  ) {
     super();
     this.page = page;
-    this.propertyData = propertyData;
+    this.actualPropertyData = actualPropertyData;
+    this.expectedPropertyData = expectedPropertyData;
   }
 
   public async answeredBy(): Promise<void> {
     await this.page.waitForLoadState("networkidle");
-    var actualSummaryData = await collectSummaryData(this.page);
 
-    for (const key in this.propertyData) {
-      if (key != "address") {
-        expect.soft(actualSummaryData[key]).toEqual(this.propertyData[key]);
-      }
+    for (const key in this.expectedPropertyData) {
+      expect
+        .soft(this.actualPropertyData[key])
+        .toEqual(this.expectedPropertyData[key]);
     }
   }
 
-  public static forPropertyType(
+  public static forProperty(
     page: Page,
-    propertyData: PropertyData
-  ): IsCorrectSummaryShown {
-    return new IsCorrectSummaryShown(page, propertyData);
+    actualPropertyData: PropertySummaryAndBasicFacts,
+    expectedPropertyData: SummaryAndBasicFacts
+  ): IsCorrectSummaryAndBasicFactsShown {
+    return new IsCorrectSummaryAndBasicFactsShown(
+      page,
+      actualPropertyData,
+      expectedPropertyData
+    );
   }
 }
 
-async function collectSummaryData(page: Page) {
-  var summaryInformation = {
-    beds: undefined,
-    baths: undefined,
-    livingArea: undefined,
-    lotSize: undefined,
-    yearBuilt: undefined,
-    units: undefined,
-    zoning: undefined,
-  };
+export class IsCorrectAddressAndListindIdShown extends Question<boolean> {
+  private page: Page;
+  private expectedPropertyInformation: string;
 
-  const locators = {
-    beds: summary.beds,
-    baths: summary.baths,
-    livingArea: summary.livingArea,
-    lotSize: summary.lotSize,
-    yearBuilt: summary.yearBuilt,
-    units: summary.units,
-    zoning: summary.zoning,
-  };
-
-  for (const locator in locators) {
-    if (await page.locator(locators[locator]).isVisible()) {
-      const value = await page.locator(locators[locator]).textContent();
-      if (locator == "zoning") summaryInformation[locator] = value;
-      else {
-        const convertedValue = convertStringToNumberForPropertySummary(value);
-        summaryInformation[locator] = convertedValue;
-      }
-    }
+  constructor(page: Page, expectedPropertyInformation: string) {
+    super();
+    this.page = page;
+    this.expectedPropertyInformation = expectedPropertyInformation;
   }
-  return summaryInformation;
-}
 
-function convertStringToNumberForPropertySummary(stringNumber: string): number {
-  return Number(stringNumber.replace(",", ""));
+  public async answeredBy(): Promise<void> {
+    await this.page.waitForLoadState("networkidle");
+    let streetAddress = await this.page
+      .locator(propertyHeader.streetAddress)
+      .textContent();
+    let cityStateZip = await this.page
+      .locator(propertyHeader.cityStateZip)
+      .textContent();
+    var actualPropertyAddress = streetAddress.trim().concat(" ", cityStateZip);
+    expect(actualPropertyAddress).toMatch(this.expectedPropertyInformation);
+  }
+
+  public static forProperty(
+    page: Page,
+    expectedPropertyInformation: string
+  ): IsCorrectAddressAndListindIdShown {
+    return new IsCorrectAddressAndListindIdShown(
+      page,
+      expectedPropertyInformation
+    );
+  }
 }
