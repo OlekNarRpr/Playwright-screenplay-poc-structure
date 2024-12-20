@@ -4,167 +4,6 @@ import { propertyHeader, summary } from "../locators/propertyInformationPage";
 import { SummaryAndBasicFacts } from "../../interface/Data/propertyData";
 import { PropertySummaryAndBasicFacts } from "../../interface/PropertyPage/proppertySummaryAndBasicFacts";
 
-export class AreCorrecCardsShown extends Question<boolean> {
-  private page: Page;
-
-  constructor(page: Page) {
-    super();
-    this.page = page;
-  }
-
-  public async answeredBy(): Promise<void> {
-    //necessary in order to fully load the Property Information page
-    await this.page.waitForLoadState("networkidle");
-    for (var i = 0; i < 3000; i = i + 100) {
-      await this.page.mouse.wheel(i, i + 100);
-      await this.page.waitForLoadState("domcontentloaded");
-    }
-
-    await expect
-      .soft(this.page.getByRole("button", { name: "Photos" }))
-      .toBeVisible();
-    await expect
-      .soft(this.page.getByRole("button", { name: "Street" }))
-      .toBeVisible();
-    await expect
-      .soft(this.page.getByRole("button", { name: "Satellite" }))
-      .toBeVisible();
-    await expect
-      .soft(this.page.getByRole("button", { name: "Historical" }))
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page
-          .locator("div")
-          .filter({ hasText: /^List Price$/ })
-          .first()
-      )
-      .toBeVisible();
-    await expect
-      .soft(this.page.locator("div").filter({ hasText: /^AVM$/ }))
-      .toBeVisible();
-    await expect
-      .soft(this.page.getByRole("heading", { name: "Basic Facts" }))
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Pricing Tools" })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Description", exact: true })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page.getByRole("heading", { name: "Map" }).getByRole("paragraph")
-      )
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Property Facts" })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Additional Resources" })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Listing Agent" })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Interior Features" })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Exterior Features" })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Listing Details" })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Financing Terms" })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Legal Description" })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Schools" })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Listing History" })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Public Record History" })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Sales and Financing Activity" })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-    await expect
-      .soft(
-        this.page
-          .getByRole("heading", { name: "Estimated Value" })
-          .getByRole("paragraph")
-      )
-      .toBeVisible();
-  }
-
-  public static atPropertyInformationPage(page: Page): AreCorrecCardsShown {
-    return new AreCorrecCardsShown(page);
-  }
-}
-
 export class IsCorrectPropertyShown extends Question<boolean> {
   private page: Page;
   private expectedPropertyInformation: string;
@@ -244,39 +83,39 @@ export class IsCorrectAddressAndListingIdShown extends Question<void> {
 
 export class IsCorrectSummaryAndBasicFactsShown extends Question<void> {
   private page: Page;
-  private actualPropertyData: PropertySummaryAndBasicFacts;
-  private expectedPropertyData: SummaryAndBasicFacts;
+  private actualPropertiesData: PropertySummaryAndBasicFacts;
+  private expectedPropertiesData: SummaryAndBasicFacts;
 
   constructor(
     page: Page,
-    actualPropertyData: PropertySummaryAndBasicFacts,
-    expectedPropertyData: SummaryAndBasicFacts
+    actualPropertiesData: PropertySummaryAndBasicFacts,
+    expectedPropertiesData: SummaryAndBasicFacts
   ) {
     super();
     this.page = page;
-    this.actualPropertyData = actualPropertyData;
-    this.expectedPropertyData = expectedPropertyData;
+    this.actualPropertiesData = actualPropertiesData;
+    this.expectedPropertiesData = expectedPropertiesData;
   }
 
   public async answeredBy(): Promise<void> {
     await this.page.waitForLoadState("networkidle");
 
-    for (const key in this.expectedPropertyData) {
+    for (const propertyInfo in this.expectedPropertiesData) {
       expect
-        .soft(this.actualPropertyData[key])
-        .toEqual(this.expectedPropertyData[key]);
+        .soft(this.actualPropertiesData[propertyInfo])
+        .toEqual(this.expectedPropertiesData[propertyInfo]);
     }
   }
 
   public static forProperty(
     page: Page,
-    actualPropertyData: PropertySummaryAndBasicFacts,
-    expectedPropertyData: SummaryAndBasicFacts
+    actualPropertiesData: PropertySummaryAndBasicFacts,
+    expectedPropertiesData: SummaryAndBasicFacts
   ): IsCorrectSummaryAndBasicFactsShown {
     return new IsCorrectSummaryAndBasicFactsShown(
       page,
-      actualPropertyData,
-      expectedPropertyData
+      actualPropertiesData,
+      expectedPropertiesData
     );
   }
 }

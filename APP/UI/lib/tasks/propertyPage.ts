@@ -147,7 +147,6 @@ export class CollectListingDetails extends Task {
         propertyListingDetails[locator] = value;
       }
     }
-
     return propertyListingDetails;
   }
 
