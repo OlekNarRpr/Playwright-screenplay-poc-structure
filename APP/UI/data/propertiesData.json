@@ -1,0 +1,82 @@
+{
+  "orgId": "VANRV-A",
+  "orgName": "New River Valley Association of REALTORS® MLS",
+  "data": [
+    {
+      "searchType": "address",
+      "address": "974 Round Meadow Dr, Christiansburg, VA 24073",
+      "listingId": "420515",
+      "summaryInformation": {
+        "status": "Active",
+        "type": "For Sale",
+        "beds": 4,
+        "baths": 4,
+        "livingArea": 2850,
+        "ownerName": "EAGLE CONSTRUCTION OF VA LLC",
+        "listPrice": 749900,
+        "lotSize": 0.94,
+        "propertyType": "Single Family"
+      }
+    },
+    {
+      "searchType": "listingId",
+      "address": "2130 Lubna Dr,Christiansburg, VA 24073",
+      "listingId": "422298",
+      "summaryInformation": {
+        "status": "Active",
+        "type": "For Sale",
+        "beds": 5,
+        "baths": 4,
+        "livingArea": 2802,
+        "ownerName": "WOODFORD WEST, NANETTE WEST",
+        "listPrice": 675000,
+        "lotSize": 1.21,
+        "propertyType": "Single Family",
+        "yearBuilt": 2002,
+        "landUse": "Single Family Residential",
+        "zoning": "R2",
+        "priceBySqft": 241
+      }
+    },
+    {
+      "searchType": "address",
+      "address": "29 Free St,Dublin, VA 24084",
+      "listingId": "422674",
+      "summaryInformation": {
+        "status": "Active",
+        "type": "For Sale",
+        "beds": 3,
+        "baths": 2,
+        "livingArea": 2020,
+        "ownerName": "HAROLD CULLOP, ELEANOR CULLOP",
+        "listPrice": 225000,
+        "lotSize": 0.45,
+        "propertyType": "Single Family",
+        "yearBuilt": 1966,
+        "landUse": "Single Family Residential",
+        "zoning": "DR1",
+        "priceBySqft": 111
+      }
+    },
+    {
+      "searchType": "listingId",
+      "address": "6544 Owens Rd,Radford, VA 24141",
+      "listingId": "422503",
+      "summaryInformation": {
+        "status": "Active",
+        "type": "For Sale",
+        "beds": 6,
+        "baths": 4,
+        "livingArea": 4906,
+        "ownerName": "CODY BELCHER, CHARMAINE BELCHER",
+        "listPrice": 474825,
+        "lotSize": 0.86,
+        "propertyType": "Single Family",
+        "yearBuilt": 1965,
+        "landUse": "Exempt (full or partial)",
+        "zoning": "R1",
+        "priceBySqft": 97
+      }
+    }
+  ]
+}
