@@ -120,39 +120,6 @@ export class IsCorrectSummaryAndBasicFactsShown extends Question<void> {
   }
 }
 
-export class IsCorrectAddressAndListindIdShown extends Question<boolean> {
-  private page: Page;
-  private expectedPropertyInformation: string;
-
-  constructor(page: Page, expectedPropertyInformation: string) {
-    super();
-    this.page = page;
-    this.expectedPropertyInformation = expectedPropertyInformation;
-  }
-
-  public async answeredBy(): Promise<void> {
-    await this.page.waitForLoadState("networkidle");
-    let streetAddress = await this.page
-      .locator(propertyHeader.streetAddress)
-      .textContent();
-    let cityStateZip = await this.page
-      .locator(propertyHeader.cityStateZip)
-      .textContent();
-    var actualPropertyAddress = streetAddress.trim().concat(" ", cityStateZip);
-    expect(actualPropertyAddress).toMatch(this.expectedPropertyInformation);
-  }
-
-  public static forProperty(
-    page: Page,
-    expectedPropertyInformation: string
-  ): IsCorrectAddressAndListindIdShown {
-    return new IsCorrectAddressAndListindIdShown(
-      page,
-      expectedPropertyInformation
-    );
-  }
-}
-
 export class IsCorrectListOrgNameShown extends Question<void> {
   private actualListOrgName: string;
   private expectedListOrgName: string;
