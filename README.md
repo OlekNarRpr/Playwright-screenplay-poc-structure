@@ -148,8 +148,8 @@ It’s built with the excellent ts-morph library and outputs all your unused exp
 Since ts-prune outputs to stdout, it’s pretty easy to use existing tools such as grep, wc and etc to manipulate the output as well.
 More info can be found at https://www.npmjs.com/package/ts-prune
 - Example of use:\
-    ts-rpune\
+    ts-rpune
 - Example output:\
 playwright.config.ts:8 - baseConfig (used in module)\
 playwright.config.ts:71 - default\
-APP/DB/helpers/testDb.ts:3 - getPropertyByPropertyId\
+APP/DB/helpers/testDb.ts:3 - getPropertyByPropertyId
