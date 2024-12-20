@@ -147,9 +147,9 @@ ts-prune is a small CLI that I built to analyze your tsconfig.json and warn you 
 It’s built with the excellent ts-morph library and outputs all your unused exports into stdout.
 Since ts-prune outputs to stdout, it’s pretty easy to use existing tools such as grep, wc and etc to manipulate the output as well.
 More info can be found at https://www.npmjs.com/package/ts-prune
-- Example of use:
-    ts-rpune
-- Example output:
-playwright.config.ts:8 - baseConfig (used in module)
-playwright.config.ts:71 - default
-APP/DB/helpers/testDb.ts:3 - getPropertyByPropertyId
+- Example of use:\
+    ts-rpune\
+- Example output:\
+playwright.config.ts:8 - baseConfig (used in module)\
+playwright.config.ts:71 - default\
+APP/DB/helpers/testDb.ts:3 - getPropertyByPropertyId\
