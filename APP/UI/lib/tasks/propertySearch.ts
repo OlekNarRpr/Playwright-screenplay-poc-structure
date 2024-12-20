@@ -1,7 +1,7 @@
 import { Task } from "@testla/screenplay-playwright";
 import { Page } from "@playwright/test";
 import { searchResultGrid } from "../locators/searchResult";
-import { PropertyData } from "../../interface/propertyData";
+import { PropertyData } from "../../interface/Data/propertyData";
 import { propertyHeader } from "../locators/propertyInformationPage";
 
 export class SearchProperty extends Task {

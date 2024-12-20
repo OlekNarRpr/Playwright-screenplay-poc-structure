@@ -41,11 +41,24 @@ export const basicFacts = {
   propertyType:
     "//li[contains(@class, 'basic-fact')]/div[contains(text(),'Type')]/following-sibling::div/span",
   landUse:
-    "//li[contains(@class, 'basic-fact')]//div[contains(text(),'Land Use')]/following-sibling::div/span",
+    "//li[contains(@class, 'basic-fact')]/div[contains(text(),'Land Use')]/following-sibling::div/span",
   numberOfBuildings:
     "//li[contains(@class, 'basic-fact')]/div[contains(text(),'Number of Buildings')]/following-sibling::div/span",
 };
 
 export const legalDescription = {
-  county: "//div[contains(text(),'County')]//following-sibling::div/span",
+  county: "//div[contains(text(),'County')]/following-sibling::div/span",
+};
+
+export const listingDetails = {
+  listingId: "//div[contains(text(),'Listing ID')]/following-sibling::div/span",
+  listingSource:
+    "//div[contains(text(),'Listing Source')]/following-sibling::div/span",
+  developmentStatus:
+    "//div[contains(text(),'Development Status')]/following-sibling::div/span",
+  showingInstructions:
+    "//div[contains(text(),'Showing Instructions')]/following-sibling::div/span",
+  listingAgreement:
+    "//div[contains(text(),'Listing Agreement')]/following-sibling::div/span",
+  occupant: "//div[contains(text(),'Occupant')]/following-sibling::div/span",
 };

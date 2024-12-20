@@ -1,8 +1,8 @@
 import { expect, Page } from "@playwright/test";
 import { Question } from "@testla/screenplay-playwright";
 import { propertyHeader, summary } from "../locators/propertyInformationPage";
-import { SummaryAndBasicFacts } from "../../interface/propertyData";
-import { PropertySummaryAndBasicFacts } from "../../interface/proppertySummaryAndBasicFacts";
+import { SummaryAndBasicFacts } from "../../interface/Data/propertyData";
+import { PropertySummaryAndBasicFacts } from "../../interface/PropertyPage/proppertySummaryAndBasicFacts";
 
 export class AreCorrecCardsShown extends Question<boolean> {
   private page: Page;
@@ -310,6 +310,31 @@ export class IsCorrectAddressAndListindIdShown extends Question<boolean> {
     return new IsCorrectAddressAndListindIdShown(
       page,
       expectedPropertyInformation
+    );
+  }
+}
+
+export class IsCorrectListOrgNameShown extends Question<void> {
+  private actualListOrgName: string;
+  private expectedListOrgName: string;
+
+  constructor(actualListOrgName: string, expectedactualListOrgName: string) {
+    super();
+    this.actualListOrgName = actualListOrgName;
+    this.expectedListOrgName = expectedactualListOrgName;
+  }
+
+  public async answeredBy(): Promise<void> {
+    expect.soft(this.actualListOrgName).toContain(this.expectedListOrgName);
+  }
+
+  public static atListingDeteails(
+    actualListOrgName: string,
+    expectedListOrgName: string
+  ): IsCorrectListOrgNameShown {
+    return new IsCorrectListOrgNameShown(
+      actualListOrgName,
+      expectedListOrgName
     );
   }
 }

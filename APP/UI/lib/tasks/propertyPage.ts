@@ -1,8 +1,13 @@
 import { Task } from "@testla/screenplay-playwright";
 import { Page } from "@playwright/test";
-import { PropertySummaryAndBasicFacts } from "../../interface/proppertySummaryAndBasicFacts";
-import { basicFacts, summary } from "../locators/propertyInformationPage";
+import { PropertySummaryAndBasicFacts } from "../../interface/PropertyPage/proppertySummaryAndBasicFacts";
+import {
+  basicFacts,
+  summary,
+  listingDetails,
+} from "../locators/propertyInformationPage";
 import { isNumber } from "../../helper/stringHelper";
+import { ListingDetails } from "../../interface/PropertyPage/listingDetails";
 
 export class SelectTab extends Task {
   private page: Page;
@@ -38,9 +43,9 @@ export class CollectSummaryAndBasicFactsData extends Task {
   }
 
   public async performAs(): Promise<PropertySummaryAndBasicFacts> {
-    var propertySummaryAndBasicFacts: PropertySummaryAndBasicFacts = {};
+    const propertySummaryAndBasicFacts: PropertySummaryAndBasicFacts = {};
 
-    const locators = {
+    const summaryAndBasciFactsLocators = {
       statusType: summary.statusType,
       listPrice: summary.listPrice,
       beds: summary.beds,
@@ -61,9 +66,15 @@ export class CollectSummaryAndBasicFactsData extends Task {
       numberOfBuildings: basicFacts.numberOfBuildings,
     };
     await this.page.waitForSelector(basicFacts.propertyType);
-    for (var locator in locators) {
-      if (await this.page.locator(locators[locator]).isVisible()) {
-        const value = await this.page.locator(locators[locator]).textContent();
+    for (var locator in summaryAndBasciFactsLocators) {
+      if (
+        await this.page
+          .locator(summaryAndBasciFactsLocators[locator])
+          .isVisible()
+      ) {
+        const value = await this.page
+          .locator(summaryAndBasciFactsLocators[locator])
+          .textContent();
         if (locator == "statusType") {
           const [extractedStatus, extractedType] =
             await getStatusTypeFromSummary(this.page);
@@ -100,6 +111,48 @@ export class CollectSummaryAndBasicFactsData extends Task {
 
   public static fromPropertyPage(page: Page): CollectSummaryAndBasicFactsData {
     return new CollectSummaryAndBasicFactsData(page);
+  }
+}
+
+export class CollectListingDetails extends Task {
+  private page: Page;
+
+  constructor(page: Page) {
+    super();
+    this.page = page;
+  }
+
+  public async performAs(): Promise<ListingDetails> {
+    const propertyListingDetails: ListingDetails = {};
+    const listingDetailsLocators = {
+      listingId: listingDetails.listingId,
+      listingSource: listingDetails.listingSource,
+      developmentStatus: listingDetails.developmentStatus,
+      showingInstructions: listingDetails.showingInstructions,
+      listingAgreement: listingDetails.listingAgreement,
+      occupant: listingDetails.occupant,
+    };
+
+    for (var i = 0; i < 3000; i = i + 100) {
+      await this.page.mouse.wheel(i, i + 100);
+      await this.page.waitForLoadState("domcontentloaded");
+    }
+    for (var locator in listingDetailsLocators) {
+      if (
+        await this.page.locator(listingDetailsLocators[locator]).isVisible()
+      ) {
+        const value = await this.page
+          .locator(listingDetailsLocators[locator])
+          .textContent();
+        propertyListingDetails[locator] = value;
+      }
+    }
+
+    return propertyListingDetails;
+  }
+
+  public static fromPropertyPage(page: Page): CollectListingDetails {
+    return new CollectListingDetails(page);
   }
 }
 

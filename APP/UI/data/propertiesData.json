@@ -15,8 +15,7 @@
         "ownerName": "EAGLE CONSTRUCTION OF VA LLC",
         "listPrice": 749900,
         "lotSize": 0.94,
-        "propertyType": "Single Family",
-        "daysOnRpr": 275
+        "propertyType": "Single Family"
       }
     },
     {
@@ -33,7 +32,6 @@
         "listPrice": 675000,
         "lotSize": 1.21,
         "propertyType": "Single Family",
-        "daysOnRpr": 78,
         "yearBuilt": 2002,
         "landUse": "Single Family Residential",
         "zoning": "R2",
@@ -54,7 +52,6 @@
         "listPrice": 225000,
         "lotSize": 0.45,
         "propertyType": "Single Family",
-        "daysOnRpr": 29,
         "yearBuilt": 1966,
         "landUse": "Single Family Residential",
         "zoning": "DR1",
@@ -75,7 +72,6 @@
         "listPrice": 474825,
         "lotSize": 0.86,
         "propertyType": "Single Family",
-        "daysOnRpr": 52,
         "yearBuilt": 1965,
         "landUse": "Exempt (full or partial)",
         "zoning": "R1",

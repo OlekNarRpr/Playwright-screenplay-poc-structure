@@ -8,6 +8,7 @@ import {
   SearchPropertyByData,
 } from "../lib/tasks/propertySearch";
 import {
+  CollectListingDetails,
   CollectSummaryAndBasicFactsData,
   SelectTab,
 } from "../lib/tasks/propertyPage";
@@ -15,7 +16,7 @@ import { IsHomePinShowsCorrectProperty } from "../lib/questions/propertyMapPage"
 import {
   SelectPropertyByAddrees,
   SelectSearchResultView,
-} from "../lib/tasks/searchPesult";
+} from "../lib/tasks/searchResult";
 import {
   IsCorrectTypeAndStatus,
   IsPropertyAddressLocated,
@@ -23,12 +24,16 @@ import {
 import propertySearchData from "../data/propertySearch.json";
 import {
   IsCorrectAddressAndListingIdShown,
+  IsCorrectListOrgNameShown,
   IsCorrectPropertyShown,
   IsCorrectSummaryAndBasicFactsShown,
 } from "../lib/questions/propertyInformationPage";
 
 import propertiesData from "../data/propertiesData.json";
-import { PropertySummaryAndBasicFacts } from "../interface/proppertySummaryAndBasicFacts";
+import { PropertySummaryAndBasicFacts } from "../interface/PropertyPage/proppertySummaryAndBasicFacts";
+import { GetQueryParameter } from "../lib/tasks/utl";
+import { IsCorrectOrgIdShown } from "../lib/questions/url";
+import { ListingDetails } from "../interface/PropertyPage/listingDetails";
 
 test.describe("Property search: ", () => {
   test("Validate property shown on map @PropertySearch", async ({ page }) => {
@@ -211,16 +216,31 @@ test.describe("Property search: ", () => {
       await agentMember.attemptsTo(
         SearchPropertyByData.fromHomePage(page, data)
       );
-      //await page.waitForTimeout(10000);
       const actualPropertySummaryAndBasicFactsData: PropertySummaryAndBasicFacts =
         await agentMember.attemptsTo(
           CollectSummaryAndBasicFactsData.fromPropertyPage(page)
         );
+      const actualOrgId = await agentMember.attemptsTo(
+        GetQueryParameter.fromUrl(page, "orgid")
+      );
+      const listingDetailsData: ListingDetails = await agentMember.attemptsTo(
+        CollectListingDetails.fromPropertyPage(page)
+      );
+
       await agentMember.asks(
         IsCorrectSummaryAndBasicFactsShown.forProperty(
           page,
           actualPropertySummaryAndBasicFactsData,
           data.summaryInformation
+        )
+      );
+      await agentMember.asks(
+        IsCorrectOrgIdShown.atUrl(actualOrgId, propertiesData.orgId)
+      );
+      await agentMember.asks(
+        IsCorrectListOrgNameShown.atListingDeteails(
+          listingDetailsData.listingSource,
+          propertiesData.orgName
         )
       );
     });
