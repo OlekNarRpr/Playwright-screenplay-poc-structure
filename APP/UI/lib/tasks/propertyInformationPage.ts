@@ -155,6 +155,40 @@ export class CollectListingDetails extends Task {
   }
 }
 
+export class GetListingId extends Task {
+  private page: Page;
+
+  constructor(page: Page) {
+    super();
+    this.page = page;
+  }
+
+  public async performAs(): Promise<string> {
+    return await this.page.locator(summary.listingId).textContent();
+  }
+
+  public static fromSummaryPropertyPage(page: Page): GetListingId {
+    return new GetListingId(page);
+  }
+}
+
+export class GetClosedPrice extends Task {
+  private page: Page;
+
+  constructor(page: Page) {
+    super();
+    this.page = page;
+  }
+
+  public async performAs(): Promise<string> {
+    return await this.page.locator(summary.closedPrice).textContent();
+  }
+
+  public static fromSummaryPropertyPage(page: Page): GetClosedPrice {
+    return new GetClosedPrice(page);
+  }
+}
+
 function convertStringToNumber(str: string): number | null {
   const num = parseFloat(str.replace(/[$,]/g, ""));
   return !isNaN(num) && isFinite(num) ? num : null;

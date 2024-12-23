@@ -7,6 +7,8 @@ export const propertyHeader = {
 export const summary = {
   statusType:
     "//div[@class='summary']/rpr-property-details-summary-panel/div/div/div/div/div[contains(@class, 'status')]",
+  closedPrice:
+    "//div[contains(text(),'Closed Price')]/../following-sibling::div[contains(@class,'price')]/span",
   listPrice:
     "//div[contains(text(),'List Price')]/../following-sibling::div[contains(@class,'price')]/span",
   listingId:

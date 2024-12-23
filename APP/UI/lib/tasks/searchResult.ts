@@ -51,3 +51,22 @@ export class SelectPropertyByAddrees extends Task {
     return new SelectPropertyByAddrees(page, address);
   }
 }
+
+export class SelectFirtsProperty extends Task {
+  private page: Page;
+
+  constructor(page: Page) {
+    super();
+    this.page = page;
+  }
+
+  public async performAs(): Promise<void> {
+    //await this.page.waitForLoadState("networkidle");
+    await this.page.locator(searchResultGrid.testFirtResultAdress).click();
+    //await this.page.waitForLoadState("networkidle");
+  }
+
+  public static fromListView(page: Page): SelectFirtsProperty {
+    return new SelectFirtsProperty(page);
+  }
+}

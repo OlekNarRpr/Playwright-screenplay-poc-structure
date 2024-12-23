@@ -25,6 +25,7 @@ export class IsPropertyAddressLocated extends Question<boolean> {
 
         expect(actualPropertyAddress).toContain(this.expectedPropertyAddress);
         break;
+
       case "county":
         await this.page.locator(searchResultGrid.firtResultAdress).click();
         await this.page.waitForLoadState("networkidle");
