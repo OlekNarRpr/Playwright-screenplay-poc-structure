@@ -1,8 +1,9 @@
 import { Task } from "@testla/screenplay-playwright";
 import { Page } from "@playwright/test";
+import { searchBar, moreFilters } from "../locators/searchBar";
+import { propertyHeader } from "../locators/propertyInformationPage";
 import { searchResultGrid } from "../locators/searchResult";
 import { PropertyData } from "../../interface/Data/propertyData";
-import { propertyHeader } from "../locators/propertyInformationPage";
 
 export class SearchProperty extends Task {
   private page: Page;
@@ -25,9 +26,10 @@ export class SearchProperty extends Task {
         .getByRole("button", { name: "Search", exact: true })
         .click();
     }
+    await this.page.waitForLoadState("networkidle");
   }
 
-  public static fromHomePage(
+  public static fromSearchBar(
     page: Page,
     propertyAddress: string
   ): SearchProperty {
@@ -48,40 +50,19 @@ export class ApplyTypeStatusFilter extends Task {
   }
 
   public async performAs(): Promise<void> {
+    await resetFilters(this.page);
     await uncheckTypeStatusFilterCheckboxesCheckPublickRecords(this.page);
     await this.page.getByLabel(this.type, { exact: true }).check();
     await this.page.getByLabel(this.status, { exact: true }).check();
   }
 
-  public static fromHomePage(
+  public static fromSearchBar(
     page: Page,
     type: string,
     status: string
   ): ApplyTypeStatusFilter {
     return new ApplyTypeStatusFilter(page, type, status);
   }
-}
-
-async function uncheckTypeStatusFilterCheckboxesCheckPublickRecords(
-  page: Page
-) {
-  const checkboxes = [
-    "Active",
-    "Active Under Contract",
-    "Pending",
-    "Hold",
-    "Closed",
-    "Withdrawn",
-    "Canceled",
-    "Expired",
-    "For Lease",
-    "For Sale",
-  ];
-  await page.getByLabel("type/status").click();
-  for (const checkbox of checkboxes) {
-    await page.getByLabel(checkbox, { exact: true }).uncheck();
-  }
-  await page.getByLabel("Public Records").check();
 }
 
 export class SearchPropertyByData extends Task {
@@ -156,10 +137,39 @@ export class SearchPropertyByData extends Task {
     }
   }
 
-  public static fromHomePage(
+  public static fromSearchBar(
     page: Page,
     propertyData: PropertyData
   ): SearchPropertyByData {
     return new SearchPropertyByData(page, propertyData);
   }
+}
+
+async function resetFilters(page: Page) {
+  await page.locator(searchBar.buttonMoreFilters).click();
+  await page.locator(moreFilters.buttonReset).click();
+  await page.locator(searchBar.buttonMoreFilters).click();
+  await page.waitForLoadState("networkidle");
+}
+
+async function uncheckTypeStatusFilterCheckboxesCheckPublickRecords(
+  page: Page
+) {
+  const checkboxes = [
+    "Active",
+    "Active Under Contract",
+    "Pending",
+    "Hold",
+    "Closed",
+    "Withdrawn",
+    "Canceled",
+    "Expired",
+    "For Lease",
+    "For Sale",
+  ];
+  await page.getByLabel("type/status").click();
+  for (const checkbox of checkboxes) {
+    await page.getByLabel(checkbox, { exact: true }).uncheck();
+  }
+  await page.getByLabel("Public Records").check();
 }

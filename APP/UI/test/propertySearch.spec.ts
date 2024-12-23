@@ -3,17 +3,15 @@ import { Actor } from "@testla/screenplay-playwright";
 import { BrowseTheWeb } from "@testla/screenplay-playwright/web";
 import { Login } from "../lib/tasks/loginPage";
 import {
-  ApplyTypeStatusFilter,
-  SearchProperty,
-  SearchPropertyByData,
-} from "../lib/tasks/propertySearch";
-import {
   CollectListingDetails,
   CollectSummaryAndBasicFactsData,
+  GetClosedPrice,
+  GetListingId,
   SelectTab,
-} from "../lib/tasks/propertyPage";
+} from "../lib/tasks/propertyInformationPage";
 import { IsHomePinShowsCorrectProperty } from "../lib/questions/propertyMapPage";
 import {
+  SelectFirtsProperty,
   SelectPropertyByAddrees,
   SelectSearchResultView,
 } from "../lib/tasks/searchResult";
@@ -23,7 +21,8 @@ import {
 } from "../lib/questions/searchResult";
 import propertySearchData from "../data/propertySearch.json";
 import {
-  IsCorrectAddressAndListingIdShown,
+  IsClosedPriceShownAndMatchFormat,
+  IsCorrectListingIdShown,
   IsCorrectListOrgNameShown,
   IsCorrectPropertyShown,
   IsCorrectSummaryAndBasicFactsShown,
@@ -34,6 +33,12 @@ import { PropertySummaryAndBasicFacts } from "../interface/PropertyPage/proppert
 import { GetQueryParameter } from "../lib/tasks/utl";
 import { IsCorrectOrgIdShown } from "../lib/questions/url";
 import { ListingDetails } from "../interface/PropertyPage/listingDetails";
+import {
+  ApplyTypeStatusFilter,
+  SearchProperty,
+  SearchPropertyByData,
+} from "../lib/tasks/searchBar";
+import { GetPropertyAddress } from "../lib/tasks/propertyHeader";
 
 test.describe("Property search: ", () => {
   test("Validate property shown on map @PropertySearch", async ({ page }) => {
@@ -45,7 +50,7 @@ test.describe("Property search: ", () => {
 
     await agentMember.attemptsTo(Login.toWebsite(page));
     await agentMember.attemptsTo(
-      SearchProperty.fromHomePage(page, searchCriteriaAddress)
+      SearchProperty.fromSearchBar(page, searchCriteriaAddress)
     );
     await agentMember.attemptsTo(
       SelectTab.atPropertyDetails(page, "Map/Location")
@@ -66,7 +71,7 @@ test.describe("Property search: ", () => {
 
     await agentMember.attemptsTo(Login.toWebsite(page));
     await agentMember.attemptsTo(
-      SearchProperty.fromHomePage(page, propertySearchData.cityStateZip)
+      SearchProperty.fromSearchBar(page, propertySearchData.cityStateZip)
     );
     await agentMember.attemptsTo(
       SelectSearchResultView.typeAs(page, "List View")
@@ -91,7 +96,7 @@ test.describe("Property search: ", () => {
 
     await agentMember.attemptsTo(Login.toWebsite(page));
     await agentMember.attemptsTo(
-      SearchProperty.fromHomePage(page, propertySearchData.county)
+      SearchProperty.fromSearchBar(page, propertySearchData.county)
     );
     await agentMember.attemptsTo(
       SelectSearchResultView.typeAs(page, "List View")
@@ -116,12 +121,15 @@ test.describe("Property search: ", () => {
 
     await agentMember.attemptsTo(Login.toWebsite(page));
     await agentMember.attemptsTo(
-      SearchProperty.fromHomePage(page, propertySearchData.address)
+      SearchProperty.fromSearchBar(page, propertySearchData.address)
+    );
+    const actualPropertyAddress = await agentMember.attemptsTo(
+      GetPropertyAddress.fromPropertyPage(page)
     );
 
     await agentMember.asks(
       IsCorrectPropertyShown.asAddressSearchResult(
-        page,
+        actualPropertyAddress,
         propertySearchData.address
       )
     );
@@ -137,7 +145,7 @@ test.describe("Property search: ", () => {
 
     await agentMember.attemptsTo(Login.toWebsite(page));
     await agentMember.attemptsTo(
-      SearchProperty.fromHomePage(page, propertySearchData.listingId)
+      SearchProperty.fromSearchBar(page, propertySearchData.listingId)
     );
     await agentMember.attemptsTo(
       SelectPropertyByAddrees.fromSearchResults(
@@ -145,10 +153,14 @@ test.describe("Property search: ", () => {
         propertySearchData.address
       )
     );
+    const actualListingId = await agentMember.attemptsTo(
+      GetListingId.fromSummaryPropertyPage(page)
+    );
+
     await agentMember.asks(
-      IsCorrectAddressAndListingIdShown.atPropertyPage(
+      IsCorrectListingIdShown.atPropertyPage(
         page,
-        propertySearchData.address,
+        actualListingId,
         propertySearchData.listingId
       )
     );
@@ -185,10 +197,10 @@ test.describe("Property search: ", () => {
 
       await agentMember.attemptsTo(Login.toWebsite(page));
       await agentMember.attemptsTo(
-        ApplyTypeStatusFilter.fromHomePage(page, type, status)
+        ApplyTypeStatusFilter.fromSearchBar(page, type, status)
       );
       await agentMember.attemptsTo(
-        SearchProperty.fromHomePage(page, "Los Angeles, California")
+        SearchProperty.fromSearchBar(page, "Los Angeles, California")
       );
       await agentMember.attemptsTo(
         SelectSearchResultView.typeAs(page, "List View")
@@ -211,10 +223,10 @@ test.describe("Property search: ", () => {
 
       await agentMember.attemptsTo(Login.toWebsite(page));
       await agentMember.attemptsTo(
-        ApplyTypeStatusFilter.fromHomePage(page, "For Sale", "Active")
+        ApplyTypeStatusFilter.fromSearchBar(page, "For Sale", "Active")
       );
       await agentMember.attemptsTo(
-        SearchPropertyByData.fromHomePage(page, data)
+        SearchPropertyByData.fromSearchBar(page, data)
       );
       const actualPropertySummaryAndBasicFactsData: PropertySummaryAndBasicFacts =
         await agentMember.attemptsTo(
@@ -245,4 +257,32 @@ test.describe("Property search: ", () => {
       );
     });
   }
+
+  test("Validate Closed Price displayed on property details and much correct format @PropertySearch", async ({
+    page,
+  }) => {
+    const agentMember = Actor.named("Agent")
+      .with("email", process.env.AGENT_USER)
+      .with("password", process.env.AGENT_PASSWORD)
+      .can(BrowseTheWeb.using(page));
+
+    await agentMember.attemptsTo(Login.toWebsite(page));
+    await agentMember.attemptsTo(
+      ApplyTypeStatusFilter.fromSearchBar(page, "For Sale", "Closed")
+    );
+    await agentMember.attemptsTo(
+      SearchProperty.fromSearchBar(page, "Fargo, North Dakota")
+    );
+    await agentMember.attemptsTo(
+      SelectSearchResultView.typeAs(page, "List View")
+    );
+    await agentMember.attemptsTo(SelectFirtsProperty.fromListView(page));
+    const closedPrice = await agentMember.attemptsTo(
+      GetClosedPrice.fromSummaryPropertyPage(page)
+    );
+
+    await agentMember.asks(
+      IsClosedPriceShownAndMatchFormat.atPropertySummary(closedPrice)
+    );
+  });
 });
