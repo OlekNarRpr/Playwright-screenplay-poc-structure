@@ -189,6 +189,23 @@ export class GetClosedPrice extends Task {
   }
 }
 
+export class GetListPrice extends Task {
+  private page: Page;
+
+  constructor(page: Page) {
+    super();
+    this.page = page;
+  }
+
+  public async performAs(): Promise<string> {
+    return await this.page.locator(summary.listPrice).textContent();
+  }
+
+  public static fromSummaryPropertyPage(page: Page): GetListPrice {
+    return new GetListPrice(page);
+  }
+}
+
 function convertStringToNumber(str: string): number | null {
   const num = parseFloat(str.replace(/[$,]/g, ""));
   return !isNaN(num) && isFinite(num) ? num : null;

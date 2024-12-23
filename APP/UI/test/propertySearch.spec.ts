@@ -7,6 +7,7 @@ import {
   CollectSummaryAndBasicFactsData,
   GetClosedPrice,
   GetListingId,
+  GetListPrice,
   SelectTab,
 } from "../lib/tasks/propertyInformationPage";
 import { IsHomePinShowsCorrectProperty } from "../lib/questions/propertyMapPage";
@@ -21,7 +22,7 @@ import {
 } from "../lib/questions/searchResult";
 import propertySearchData from "../data/propertySearch.json";
 import {
-  IsClosedPriceShownAndMatchFormat,
+  IsPriceShownAndMachFormat,
   IsCorrectListingIdShown,
   IsCorrectListOrgNameShown,
   IsCorrectPropertyShown,
@@ -258,7 +259,7 @@ test.describe("Property search: ", () => {
     });
   }
 
-  test("Validate Closed Price displayed on property details and much correct format @PropertySearch", async ({
+  test("Validate Closed Price displayed on property details and mach correct format @PropertySearch", async ({
     page,
   }) => {
     const agentMember = Actor.named("Agent")
@@ -282,7 +283,35 @@ test.describe("Property search: ", () => {
     );
 
     await agentMember.asks(
-      IsClosedPriceShownAndMatchFormat.atPropertySummary(closedPrice)
+      IsPriceShownAndMachFormat.atPropertySummary(closedPrice)
+    );
+  });
+
+  test("Validate List Price displayed on property details and mach correct format @PropertySearch", async ({
+    page,
+  }) => {
+    const agentMember = Actor.named("Agent")
+      .with("email", process.env.AGENT_USER)
+      .with("password", process.env.AGENT_PASSWORD)
+      .can(BrowseTheWeb.using(page));
+
+    await agentMember.attemptsTo(Login.toWebsite(page));
+    await agentMember.attemptsTo(
+      ApplyTypeStatusFilter.fromSearchBar(page, "For Sale", "Active")
+    );
+    await agentMember.attemptsTo(
+      SearchProperty.fromSearchBar(page, "North Platte, Nebraska")
+    );
+    await agentMember.attemptsTo(
+      SelectSearchResultView.typeAs(page, "List View")
+    );
+    await agentMember.attemptsTo(SelectFirtsProperty.fromListView(page));
+    const closedPrice = await agentMember.attemptsTo(
+      GetListPrice.fromSummaryPropertyPage(page)
+    );
+
+    await agentMember.asks(
+      IsPriceShownAndMachFormat.atPropertySummary(closedPrice)
     );
   });
 });

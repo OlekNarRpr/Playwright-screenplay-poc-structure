@@ -129,21 +129,21 @@ export class IsCorrectListOrgNameShown extends Question<void> {
   }
 }
 
-export class IsClosedPriceShownAndMatchFormat extends Question<void> {
-  private closedPrice: string;
+export class IsPriceShownAndMachFormat extends Question<void> {
+  private actualPrice: string;
 
-  constructor(closedPrice: string) {
+  constructor(actualPrice: string) {
     super();
-    this.closedPrice = closedPrice;
+    this.actualPrice = actualPrice;
   }
 
   public async answeredBy(): Promise<void> {
-    expect(isValidPriceFormat(this.closedPrice)).toBe(true);
+    expect(isValidPriceFormat(this.actualPrice)).toBe(true);
   }
 
   public static atPropertySummary(
-    closedPrice: string
-  ): IsClosedPriceShownAndMatchFormat {
-    return new IsClosedPriceShownAndMatchFormat(closedPrice);
+    actualPrice: string
+  ): IsPriceShownAndMachFormat {
+    return new IsPriceShownAndMachFormat(actualPrice);
   }
 }
